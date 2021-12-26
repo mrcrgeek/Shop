@@ -24,8 +24,7 @@ class UsersController extends Controller
             'password' => Hash::make($request->input('password'))
         ];
 
-        if(!\Check_PhoneNum_ir($register_data['phoneNumber']))
-        {
+        if (!\Check_PhoneNum_ir($register_data['phoneNumber'])) {
             return response()->json([
                 'message' => 'Phone number should not be more or less than 11 char & should be IR'
             ], 422);
@@ -34,15 +33,15 @@ class UsersController extends Controller
         User::create($register_data);
 
         return response()->json([
-           'message' => 'register was successful'
+            'message' => 'register was successful'
         ], 200);
     }
 
     public function login(Request $request)
     {
         $request->validate([
-           'name' => 'required|max:50',
-           'password' => 'required'
+            'name' => 'required|max:50',
+            'password' => 'required'
         ]);
 
         $login_data = [
@@ -52,14 +51,12 @@ class UsersController extends Controller
 
         $User_object = User::where('name', $login_data['name'])->first();
 
-        if($User_object != null)
-        {
-            if(Hash::check($login_data['password'], $User_object->password))
-            {
+        if ($User_object != null) {
+            if (Hash::check($login_data['password'], $User_object->password)) {
                 $Access_Token = $User_object->createToken('User-info')->accessToken;
 
                 return response()->json([
-                   'message' => 'Login was successful',
+                    'message' => 'Login was successful',
                     'Token' => $Access_Token
                 ], 200);
             }
@@ -68,5 +65,10 @@ class UsersController extends Controller
         return response()->json([
             'message' => 'username or password is wrong'
         ], 403);
+    }
+
+    public function show(Request $request)
+    {
+        return $request->user();
     }
 }
