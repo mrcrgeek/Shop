@@ -7,5 +7,8 @@ use App\Models\User;
 
 class UsersController extends Controller
 {
-    //
+    public function register()
+    {
+
+    }
 }
