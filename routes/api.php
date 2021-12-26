@@ -16,5 +16,5 @@ use App\Http\Controllers\UsersController;
 */
 
 Route::prefix('/user')->group(function () {
-    Route::post('/register', [UsersController::class, 'register']);
+    Route::post('/register', [UsersController::class, 'register'])->name('signup_route');
 });
