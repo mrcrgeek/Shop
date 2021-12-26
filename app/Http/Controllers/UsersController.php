@@ -37,4 +37,36 @@ class UsersController extends Controller
            'message' => 'register was successful'
         ], 200);
     }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+           'name' => 'required|max:50',
+           'password' => 'required'
+        ]);
+
+        $login_data = [
+            'name' => $request->input('name'),
+            'password' => $request->input('password')
+        ];
+
+        $User_object = User::where('name', $login_data['name'])->first();
+
+        if($User_object != null)
+        {
+            if(Hash::check($login_data['password'], $User_object->password))
+            {
+                $Access_Token = $User_object->createToken('User-info')->accessToken;
+
+                return response()->json([
+                   'message' => 'Login was successful',
+                    'Token' => $Access_Token
+                ], 200);
+            }
+        }
+
+        return response()->json([
+            'message' => 'username or password is wrong'
+        ], 403);
+    }
 }
