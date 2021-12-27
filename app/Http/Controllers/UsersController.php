@@ -53,7 +53,7 @@ class UsersController extends Controller
 
         if ($User_object != null) {
             if (Hash::check($login_data['password'], $User_object->password)) {
-                $Access_Token = $User_object->createToken('User-info')->accessToken;
+                $Access_Token = $User_object->createToken('User-info')->plainTextToken;
 
                 return response()->json([
                     'message' => 'Login was successful',

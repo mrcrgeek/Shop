@@ -18,5 +18,9 @@ use App\Http\Controllers\UsersController;
 Route::prefix('/user')->group(function () {
     Route::post('/register', [UsersController::class, 'register'])->name('signup_route');
     Route::post('/login', [UsersController::class, 'login'])->name('login_route');
-    Route::get('/info', [UsersController::class, 'show'])->middleware('auth:api')->name('test_route');
+    Route::get('/info', [UsersController::class, 'show'])->middleware('auth:sanctum')->name('test_middleware');
+});
+
+Route::prefix('/admin')->group(function () {
+
 });
