@@ -39,7 +39,15 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ]
+        ],
+        'users' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+        'admins' => [
+          'driver' => 'sanctum',
+          'provider' => 'admins'
+        ],
     ],
 
     /*
@@ -64,7 +72,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

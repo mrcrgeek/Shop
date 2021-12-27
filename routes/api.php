@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\AdminsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,10 @@ use App\Http\Controllers\UsersController;
 Route::prefix('/user')->group(function () {
     Route::post('/register', [UsersController::class, 'register'])->name('signup_route');
     Route::post('/login', [UsersController::class, 'login'])->name('login_route');
-    Route::get('/info', [UsersController::class, 'show'])->middleware('auth:sanctum')->name('test_middleware');
+    Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')->name('test_middleware');
 });
 
 Route::prefix('/admin')->group(function () {
-
+    Route::post('/login', [AdminsController::class, 'login']);
+    Route::get('/info', [AdminsController::class, 'show'])->middleware('auth:admins')->name('test_middleware');
 });
