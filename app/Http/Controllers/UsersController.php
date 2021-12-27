@@ -67,7 +67,7 @@ class UsersController extends Controller
         ], 403);
     }
 
-    public function show(Request $request)
+    public function show(Request $request) //test
     {
         return $request->user();
     }
