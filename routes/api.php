@@ -23,6 +23,8 @@ Route::prefix('/user')->group(function () {
 });
 
 Route::prefix('/admin')->group(function () {
-    Route::post('/login', [AdminsController::class, 'login']);
+    Route::post('/login', [AdminsController::class, 'login'])->name('admin_login');
+    Route::get('/all_users', [AdminsController::class, 'all_users'])->middleware('auth:admins')->name('all_users');
+    Route::get('/users', [AdminsController::class, 'User_Paginate'])->middleware('auth:admins')->name('user_pagination');
     Route::get('/info', [AdminsController::class, 'show'])->middleware('auth:admins')->name('test_middleware');
 });
