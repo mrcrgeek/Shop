@@ -23,4 +23,13 @@ function Check_PhoneNum_ir($PhoneNumber):bool
     return $result;
 }
 
+function Set_Default_Value($Var, $Value)
+{
+    if($Var == null)
+    {
+        $Var = $Value;
+    }
+
+    return $Var;
+}
 ?>
