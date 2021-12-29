@@ -11,10 +11,10 @@ class UsersController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|alpha_num|unique:App\Models\User',
-            'lastname' => 'required',
+            'name' => 'required|max:55|unique:App\Models\User',
+            'lastname' => 'required|max:100',
             'phoneNumber' => 'required|numeric|unique:App\Models\User',
-            'password' => 'required'
+            'password' => 'required|max:400'
         ]);
 
         $register_data = [
@@ -41,7 +41,7 @@ class UsersController extends Controller
     {
         $request->validate([
             'name' => 'required|max:50',
-            'password' => 'required'
+            'password' => 'required|max:400'
         ]);
 
         $login_data = [
@@ -70,5 +70,28 @@ class UsersController extends Controller
     public function show(Request $request) //test
     {
         return $request->user();
+    }
+
+    public function edit_profile(Request $request)
+    {
+        $request->validate([
+            'name' => 'max:50|unique:App\Models\User',
+            'lastname' => 'max:100',
+            'password' => 'max:400'
+        ]);
+
+        $User_id = $request->user()->id;
+
+        $New_Data = [];
+
+        (!empty($request->input('name')) && ($New_Data['name'] = $request->input('name')));
+        (!empty($request->input('lastname')) && ($New_Data['lastname'] = $request->input('lastname')));
+        (!empty($request->input('password')) && ($New_Data['password'] = Hash::make($request->input('password'))));
+
+        User::where('id', $User_id)->update($New_Data);
+
+        return response()->json([
+            'message' => 'update was successful'
+        ], 200);
     }
 }
