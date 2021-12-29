@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminsController;
 Route::prefix('/user')->group(function () {
     Route::post('/register', [UsersController::class, 'register'])->name('signup_route');
     Route::post('/login', [UsersController::class, 'login'])->name('login_route');
+    Route::post('/edit_profile', [UsersController::class, 'edit_profile'])->middleware('auth:users')->name('edit_route');
     Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')->name('test_middleware');
 });
 
