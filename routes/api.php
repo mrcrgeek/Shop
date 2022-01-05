@@ -38,6 +38,8 @@ Route::prefix('/admin')->group(function () {
         ->name('edit_user');
     Route::post('/product/add_category', [AdminsController::class, 'add_category'])->middleware('auth:admins')
         ->name('add_category');
+    Route::post('product/add', [AdminsController::class, 'add_product'])->middleware('auth:admins')
+        ->name('add_product');
     Route::get('/info', [AdminsController::class, 'show'])->middleware('auth:admins')
         ->name('test_middleware');
 });
