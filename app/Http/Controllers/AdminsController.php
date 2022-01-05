@@ -53,8 +53,7 @@ class AdminsController extends Controller
     {
         $Users = User::get();
 
-        if(count($Users) > 0)
-        {
+        if (count($Users) > 0) {
             return response()->json([
                 'Data' => $Users,
                 'Count' => count($Users)
@@ -77,8 +76,7 @@ class AdminsController extends Controller
             ->take(\Set_Default_Value($request->input('limit'), '10'))
             ->get();
 
-        if(count($Data) > 0)
-        {
+        if (count($Data) > 0) {
             return response()->json([
                 'Data' => $Data,
                 'Count' => count($Data)
@@ -90,7 +88,7 @@ class AdminsController extends Controller
         ], 404);
     }
 
-    public function edit_user(Request $request,$id)
+    public function edit_user(Request $request, $id)
     {
         $request->validate([
             'name' => 'max:55|unique:App\Models\User',
@@ -101,7 +99,7 @@ class AdminsController extends Controller
 
         $User_object = User::where('id', $id);
 
-        if($User_object->exists()) {
+        if ($User_object->exists()) {
             $New_Data = [];
 
             (!empty($request->input('name')) && ($New_Data['name'] = $request->input('name')));
@@ -109,8 +107,7 @@ class AdminsController extends Controller
             (!empty($request->input('phoneNumber')) && ($New_Data['phoneNumber'] = $request->input('phoneNumber')));
             (!empty($request->input('password')) && ($New_Data['password'] = Hash::make($request->input('password'))));
 
-            if (isset($New_Data['phoneNumber']) && (!\Check_PhoneNum_ir($request->input('phoneNumber'))))
-            {
+            if (isset($New_Data['phoneNumber']) && (!\Check_PhoneNum_ir($request->input('phoneNumber')))) {
                 return response()->json([
                     'message' => 'Phone number should not be more or less than 11 char & should be IR'
                 ], 422);
@@ -120,7 +117,7 @@ class AdminsController extends Controller
 
             return response()->json([
                 'message' => 'Update Was Successful'
-            ],200);
+            ], 200);
         }
 
         return response()->json([
@@ -156,8 +153,7 @@ class AdminsController extends Controller
 
         $Category_Object = Category::where('category_name', $request->input('category_name'))->first();
 
-        if($Category_Object != null)
-        {
+        if ($Category_Object != null) {
             $Img_path = $request->file('img')->store('/uploads');
 
             $Product_data = [
@@ -185,7 +181,7 @@ class AdminsController extends Controller
         ], 404);
     }
 
-    public function update_product(Request $request,$id)
+    public function update_product(Request $request, $id)
     {
         $request->validate([
             'title' => 'max:60|unique:App\Models\Product',
@@ -197,8 +193,7 @@ class AdminsController extends Controller
 
         $Product_object = Product::where('id', $id);
 
-        if($Product_object->exists())
-        {
+        if ($Product_object->exists()) {
             $New_Data = [];
 
             (!empty($request->input('title')) && ($New_Data['title'] = $request->input('title')));
@@ -210,12 +205,30 @@ class AdminsController extends Controller
             $Product_object->update($New_Data);
 
             return response()->json([
-               'message' => 'Product Updated Successfully'
+                'message' => 'Product Updated Successfully'
             ], 200);
         }
 
         return response()->json([
             'message' => 'Product Not Found'
         ]);
+    }
+
+    public function delete_product($id)
+    {
+        $Product_Object = Product::where('id', $id);
+
+        if($Product_Object->exists())
+        {
+            $Product_Object->delete();
+
+            return response()->json([
+                'message' => 'Product Deleted Successfully'
+            ], 200);
+        }
+
+        return response()->json([
+           'message' => 'Product Not Found'
+        ], 404);
     }
 }
