@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Hash;
 
 class AdminsController extends Controller
@@ -126,14 +128,18 @@ class AdminsController extends Controller
         ], 404);
     }
 
-    public function add_product(Request $request)
+    public function add_category(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:60|unique:App\Models\Product',
-            'description' => 'required|max:150',
-            'price' => 'required|integer',
-            'img' => 'required|mimes:jpg,png|max:10240',
-            'stock' => 'required|integer'
+            'category_name' => 'required|unique:App\Models\Category|max:50'
         ]);
+
+        Category::create([
+            'category_name' => $request->input('category_name')
+        ]);
+
+        return response()->json([
+            'message' => 'Category Added Successfully'
+        ], 200);
     }
 }
