@@ -142,4 +142,47 @@ class AdminsController extends Controller
             'message' => 'Category Added Successfully'
         ], 200);
     }
+
+    public function add_product(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:60|unique:App\Models\Product',
+            'description' => 'required|max:150',
+            'price' => 'required|integer',
+            'img' => 'required|mimes:jpg,png,jpeg|max:10240',
+            'stock' => 'required|integer',
+            'category_name' => 'required|max:50'
+        ]);
+
+        $Category_Object = Category::where('category_name', $request->input('category_name'))->first();
+
+        if($Category_Object != null)
+        {
+            $Img_path = $request->file('img')->store('/uploads');
+
+            $Product_data = [
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'img' => $Img_path,
+                'stock' => $request->input('stock'),
+            ];
+
+            $Product_Object = Product::create($Product_data);
+
+            $Product_Category_Object = ProductCategory::create([
+                'product_id' => $Product_Object->id,
+                'category_id' => $Category_Object->id
+            ]);
+
+            return response()->json([
+                'message' => 'Product Added Successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Category Not Found'
+        ], 404);
+    }
+
 }
