@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use http\Env\Response;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Http\Request;
-use App\Models\Admin;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 
 class AdminsController extends Controller
@@ -123,5 +124,16 @@ class AdminsController extends Controller
         return response()->json([
             'message' => 'User Not Found'
         ], 404);
+    }
+
+    public function add_product(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:60|unique:App\Models\Product',
+            'description' => 'required|max:150',
+            'price' => 'required|integer',
+            'img' => 'required|mimes:jpg,png|max:10240',
+            'stock' => 'required|integer'
+        ]);
     }
 }
