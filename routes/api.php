@@ -42,6 +42,8 @@ Route::prefix('/admin')->group(function () {
         ->name('add_product');
     Route::post('/product/update/{id}', [AdminsController::class, 'update_product'])->middleware('auth:admins')
         ->name('update_product');
+    Route::delete('/product/delete/{id}', [AdminsController::class, 'delete_product'])->middleware('auth:admins')
+        ->name('delete_product');
     Route::get('/info', [AdminsController::class, 'show'])->middleware('auth:admins')
         ->name('test_middleware');
 });
