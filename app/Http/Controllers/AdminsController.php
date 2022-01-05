@@ -185,4 +185,37 @@ class AdminsController extends Controller
         ], 404);
     }
 
+    public function update_product(Request $request,$id)
+    {
+        $request->validate([
+            'title' => 'max:60|unique:App\Models\Product',
+            'description' => 'max:150',
+            'price' => 'integer',
+            'img' => 'mimes:jpg,png,jpeg|max:10240',
+            'stock' => 'integer',
+        ]);
+
+        $Product_object = Product::where('id', $id);
+
+        if($Product_object->exists())
+        {
+            $New_Data = [];
+
+            (!empty($request->input('title')) && ($New_Data['title'] = $request->input('title')));
+            (!empty($request->input('description')) && ($New_Data['description'] = $request->input('description')));
+            (!empty($request->input('price')) && ($New_Data['price'] = $request->input('price')));
+            (!empty($request->file('img')) && ($New_Data['img'] = $request->file('img')->store('/uploads')));
+            (!empty($request->input('stock')) && ($New_Data['stock'] = $request->input('stock')));
+
+            $Product_object->update($New_Data);
+
+            return response()->json([
+               'message' => 'Product Updated Successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Product Not Found'
+        ]);
+    }
 }
