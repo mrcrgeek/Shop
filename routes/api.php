@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\ProductsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,13 +37,13 @@ Route::prefix('/admin')->group(function () {
         ->name('user_pagination');
     Route::patch('/edit_user/{id}', [UsersController::class, 'edit_user'])->middleware('auth:admins')
         ->name('edit_user');
-    Route::post('/product/add_category', [AdminsController::class, 'add_category'])->middleware('auth:admins')
+    Route::post('/product/add_category', [ProductsController::class, 'add_category'])->middleware('auth:admins')
         ->name('add_category');
-    Route::post('/product/add', [AdminsController::class, 'add_product'])->middleware('auth:admins')
+    Route::post('/product/add', [ProductsController::class, 'add_product'])->middleware('auth:admins')
         ->name('add_product');
-    Route::post('/product/update/{id}', [AdminsController::class, 'update_product'])->middleware('auth:admins')
+    Route::post('/product/update/{id}', [ProductsController::class, 'update_product'])->middleware('auth:admins')
         ->name('update_product');
-    Route::delete('/product/delete/{id}', [AdminsController::class, 'delete_product'])->middleware('auth:admins')
+    Route::delete('/product/delete/{id}', [ProductsController::class, 'delete_product'])->middleware('auth:admins')
         ->name('delete_product');
     Route::get('/info', [AdminsController::class, 'show'])->middleware('auth:admins')
         ->name('test_middleware');
