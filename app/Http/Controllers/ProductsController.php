@@ -104,23 +104,6 @@ class ProductsController extends Controller
         ], 404);
     }
 
-//    public function products()
-//    {
-//        $Prodcuts = Product::get();
-//
-//        if(count($Prodcuts) > 0)
-//        {
-//            return response()->json([
-//                'Data' => $Prodcuts,
-//                'Count' => count($Prodcuts)
-//            ], 200);
-//        }
-//
-//        return response()->json([
-//           'message' => 'No Products Found'
-//        ], 404);
-//    }
-
     public function products(Request $request)
     {
         $request->validate([
