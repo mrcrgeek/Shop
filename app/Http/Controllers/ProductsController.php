@@ -9,21 +9,6 @@ use App\Models\ProductCategory;
 
 class ProductsController extends Controller
 {
-    public function add_category(Request $request)
-    {
-        $request->validate([
-            'category_name' => 'required|unique:App\Models\Category|max:50'
-        ]);
-
-        Category::create([
-            'category_name' => $request->input('category_name')
-        ]);
-
-        return response()->json([
-            'message' => 'Category Added Successfully'
-        ], 200);
-    }
-
     public function add_product(Request $request)
     {
         $request->validate([
@@ -102,9 +87,11 @@ class ProductsController extends Controller
     {
         $Product_Object = Product::where('id', $id);
 
+
         if($Product_Object->exists())
         {
             $Product_Object->delete();
+            ProductCategory::where('product_id', $id)->delete();
 
             return response()->json([
                 'message' => 'Product Deleted Successfully'
@@ -113,6 +100,23 @@ class ProductsController extends Controller
 
         return response()->json([
             'message' => 'Product Not Found'
+        ], 404);
+    }
+
+    public function products()
+    {
+        $Prodcuts = Product::get();
+
+        if(count($Prodcuts) > 0)
+        {
+            return response()->json([
+                'Data' => $Prodcuts,
+                'Count' => count($Prodcuts)
+            ], 200);
+        }
+
+        return response()->json([
+           'message' => 'No Products Found'
         ], 404);
     }
 }

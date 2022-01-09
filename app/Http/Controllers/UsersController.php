@@ -107,7 +107,7 @@ class UsersController extends Controller
         }
 
         return response()->json([
-            'message' => 'No Users found'
+            'message' => 'No Users Found'
         ], 404);
     }
 
@@ -130,7 +130,7 @@ class UsersController extends Controller
         }
 
         return response()->json([
-            'message' => 'No Users found'
+            'message' => 'No Users Found'
         ], 404);
     }
 
