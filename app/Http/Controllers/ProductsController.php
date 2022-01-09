@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
@@ -103,20 +104,72 @@ class ProductsController extends Controller
         ], 404);
     }
 
-    public function products()
-    {
-        $Prodcuts = Product::get();
+//    public function products()
+//    {
+//        $Prodcuts = Product::get();
+//
+//        if(count($Prodcuts) > 0)
+//        {
+//            return response()->json([
+//                'Data' => $Prodcuts,
+//                'Count' => count($Prodcuts)
+//            ], 200);
+//        }
+//
+//        return response()->json([
+//           'message' => 'No Products Found'
+//        ], 404);
+//    }
 
-        if(count($Prodcuts) > 0)
+    public function products(Request $request)
+    {
+        $request->validate([
+            'from' => 'date',
+            'to' => 'date'
+        ]);
+
+        $Products = Product::query();
+
+        if($request->has('category'))
         {
-            return response()->json([
-                'Data' => $Prodcuts,
-                'Count' => count($Prodcuts)
-            ], 200);
+            $Category_Object = Category::where('category_name', $request->input('category'))->first();
+
+            if($Category_Object != null)
+            {
+                $Products = $Category_Object->find($Category_Object->id)->product();
+            }
+            else
+            {
+                return response()->json([
+                    'message' => 'category not found'
+                ], 404);
+            }
         }
 
-        return response()->json([
-           'message' => 'No Products Found'
-        ], 404);
+        if($request->has('from') && $request->has('to'))
+        {
+            $Products->where('created_at', '>=' , $request->input('from'))->where('created_at', '<=' , $request->input('to'))->get();
+        }
+
+        if($request->has('stock'))
+        {
+            if($request->input('stock') == 'available')
+            {
+                $Products->where('stock', '>' , '0');
+            }
+            else if($request->input('stock') == 'unavailable')
+            {
+                $Products->where('stock', '<' , '1');
+            }
+        }
+
+        if(empty($Products))
+        {
+            return response()->json([
+               'message' => 'No Products Found'
+            ], 404);
+        }
+
+        return response()->json($Products->get(), 200);
     }
 }
