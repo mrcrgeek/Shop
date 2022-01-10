@@ -27,7 +27,11 @@ Route::prefix('/user')->group(function () {
         ->name('edit_route');
     Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')
         ->name('test_middleware');
-    Route::get('/products', [ProductsController::class, 'products'])->middleware('auth:users');
+});
+
+Route::prefix('/shop')->group(function () {
+    Route::get('/products', [ProductsController::class, 'products'])->middleware('auth:users')
+        ->name('get_all_product');
 });
 
 Route::prefix('/admin')->group(function () {

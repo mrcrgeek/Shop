@@ -119,7 +119,7 @@ class ProductsController extends Controller
 
             if($Category_Object != null)
             {
-                $Products = $Category_Object->find($Category_Object->id)->product();
+                $Products = $Category_Object->find($Category_Object->id)->products();
             }
             else
             {
