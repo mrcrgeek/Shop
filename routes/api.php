@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CartsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::prefix('/user')->group(function () {
         ->name('login_route');
     Route::patch('/edit_profile', [UsersController::class, 'edit_profile'])->middleware('auth:users')
         ->name('edit_route');
+    Route::post('/add_to_cart', [CartsController::class, 'add_to_cart'])->middleware('auth:users')
+        ->name('add_to_cart_route');
     Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')
         ->name('test_middleware');
 });
