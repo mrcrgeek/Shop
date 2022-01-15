@@ -30,6 +30,13 @@ class CartsController extends Controller
 
             $Stock = $Product_object->stock;
 
+            if($request->input('quantity') <= 0)
+            {
+                return response()->json([
+                    'message' => 'Quantity Should be Bigger Than 0'
+                ], 422);
+            }
+
             if($Stock - $request->input('quantity') <= 0)
             {
                 return response()->json([
