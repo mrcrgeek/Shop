@@ -28,6 +28,8 @@ Route::prefix('/user')->group(function () {
         ->name('edit_route');
     Route::post('/add_to_cart', [CartsController::class, 'add_to_cart'])->middleware('auth:users')
         ->name('add_to_cart_route');
+    Route::get('/carts', [CartsController::class, 'carts'])->middleware('auth:users')
+        ->name('carts_route');
     Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')
         ->name('test_middleware');
 });

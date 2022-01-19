@@ -61,4 +61,28 @@ class CartsController extends Controller
             'message' => 'Product Not Found'
         ], 404);
     }
+
+    public function carts(Request $request)
+    {
+        $Cart_object = Cart::where('user_id', $request->user()->id)->get();
+
+        if(count($Cart_object) > 0)
+        {
+            $Carts = [];
+
+            foreach ($Cart_object as $cart)
+            {
+                $Carts[] = Product::find($cart['product_id']);
+            }
+
+            return response()->json([
+                'carts' => $Carts,
+                'count' => count($Carts)
+            ],200);
+        }
+
+        return response()->json([
+            'message' => 'Cart is Empty'
+        ], 404);
+    }
 }
