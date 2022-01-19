@@ -155,4 +155,18 @@ class ProductsController extends Controller
 
         return response()->json($Products->get(), 200);
     }
+
+    public function single_product($id)
+    {
+        $Product_object = Product::where('id', $id);
+
+        if($Product_object->exists())
+        {
+            return response()->json($Product_object->first(), 200);
+        }
+
+        return response()->json([
+            'message' => 'Product Not Found'
+        ], 404);
+    }
 }

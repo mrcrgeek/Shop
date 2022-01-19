@@ -37,6 +37,8 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/shop')->group(function () {
     Route::get('/products', [ProductsController::class, 'products'])->middleware('auth:users')
         ->name('get_all_product');
+    Route::get('product/{id}', [ProductsController::class, 'single_product'])->middleware('auth:users')
+        ->name('show_single_product');
 });
 
 Route::prefix('/admin')->group(function () {
