@@ -30,6 +30,8 @@ Route::prefix('/user')->group(function () {
         ->name('add_to_cart_route');
     Route::get('/carts', [CartsController::class, 'carts'])->middleware('auth:users')
         ->name('carts_route');
+    Route::delete('carts/delete/{id}', [CartsController::class, 'delete_cart'])->middleware('auth:users')
+        ->name('delete_cart_item');
     Route::get('/info', [UsersController::class, 'show'])->middleware('auth:users')
         ->name('test_middleware');
 });

@@ -85,4 +85,21 @@ class CartsController extends Controller
             'message' => 'Cart is Empty'
         ], 404);
     }
+
+    public function delete_cart(Request $request,$id)
+    {
+        $Cart_object = Cart::where('user_id', $request->user()->id)->where('product_id', $id);
+        if($Cart_object->exists())
+        {
+            $Cart_object->delete();
+
+            return response()->json([
+                'message' => 'Cart Deleted Successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Cart Not Found'
+        ], 404);
+    }
 }
