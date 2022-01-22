@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\Traits;
 
 class UsersController extends Controller
 {
@@ -80,15 +81,15 @@ class UsersController extends Controller
             'password' => 'max:400'
         ]);
 
-        $User_id = $request->user()->id;
+        $id = $request->user()->id;
 
-        $New_Data = [];
+        $new_data = [
+            'name' => $request->input('name'),
+            'lastname' => $request->input('lastname'),
+            'password' => $request->input('password')
+        ];
 
-        (!empty($request->input('name')) && ($New_Data['name'] = $request->input('name')));
-        (!empty($request->input('lastname')) && ($New_Data['lastname'] = $request->input('lastname')));
-        (!empty($request->input('password')) && ($New_Data['password'] = Hash::make($request->input('password'))));
-
-        User::where('id', $User_id)->update($New_Data);
+        Traits::update_user($new_data, $id);
 
         return response()->json([
             'message' => 'update was successful'
@@ -145,21 +146,22 @@ class UsersController extends Controller
 
         $User_object = User::where('id', $id);
 
-        if ($User_object->exists()) {
-            $New_Data = [];
+        if ($User_object->exists())
+        {
+            $new_data = [
+                'name' => $request->input('name'),
+                'lastname' => $request->input('lastname'),
+                'phoneNumber' => $request->input('phoneNumber'),
+                'password' => $request->input('password')
+            ];
 
-            (!empty($request->input('name')) && ($New_Data['name'] = $request->input('name')));
-            (!empty($request->input('lastname')) && ($New_Data['lastname'] = $request->input('lastname')));
-            (!empty($request->input('phoneNumber')) && ($New_Data['phoneNumber'] = $request->input('phoneNumber')));
-            (!empty($request->input('password')) && ($New_Data['password'] = Hash::make($request->input('password'))));
-
-            if (isset($New_Data['phoneNumber']) && (!\Check_PhoneNum_ir($request->input('phoneNumber')))) {
+            if (isset($new_data['phoneNumber']) && (!\Check_PhoneNum_ir($request->input('phoneNumber')))) {
                 return response()->json([
                     'message' => 'Phone number should not be more or less than 11 char & should be IR'
                 ], 422);
             }
 
-            $User_object->update($New_Data);
+            Traits::update_user($new_data, $id);
 
             return response()->json([
                 'message' => 'Update Was Successful'
