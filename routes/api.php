@@ -46,6 +46,8 @@ Route::prefix('/shop')->group(function () {
 Route::prefix('/admin')->group(function () {
     Route::post('/login', [AdminsController::class, 'login'])
         ->name('admin_login');
+    Route::post('/register', [AdminsController::class, 'register'])
+        ->name('admin_register');
     Route::get('/all_users', [UsersController::class, 'all_users'])->middleware('auth:admins')
         ->name('all_users');
     Route::get('/users', [UsersController::class, 'User_Paginate'])->middleware('auth:admins')

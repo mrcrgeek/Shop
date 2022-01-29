@@ -40,6 +40,18 @@ class AdminsController extends Controller
         ], 403);
     }
 
+    public function register (Request $request)
+    {
+        $admin_data = $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        $admin_data['password'] = Hash::make($admin_data['password']);
+
+        return Admin::create($admin_data);
+    }
+
     public function show(Request $request) //test
     {
         return $request->user();
