@@ -25,7 +25,8 @@ class UsersController extends Controller
             'password' => Hash::make($request->input('password'))
         ];
 
-        if (!\Check_PhoneNum_ir($register_data['phoneNumber'])) {
+        if (!\Check_PhoneNum_ir($register_data['phoneNumber']))
+        {
             return response()->json([
                 'message' => 'Phone number should not be more or less than 11 char & should be IR'
             ], 422);
@@ -41,18 +42,27 @@ class UsersController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:50',
+            'phoneNumber' => 'required|numeric',
             'password' => 'required|max:400'
         ]);
 
+
         $login_data = [
-            'name' => $request->input('name'),
+            'phoneNumber' => $request->input('phoneNumber'),
             'password' => $request->input('password')
         ];
 
-        $User_object = User::where('name', $login_data['name'])->first();
+        if (!\Check_PhoneNum_ir($login_data['phoneNumber']))
+        {
+            return response()->json([
+                'message' => 'Phone number should not be more or less than 11 char & should be IR'
+            ], 422);
+        }
 
-        if ($User_object != null) {
+        $User_object = User::where('phoneNumber', $login_data['phoneNumber'])->first();
+
+        if ($User_object != null)
+        {
             if (Hash::check($login_data['password'], $User_object->password)) {
                 $Access_Token = $User_object->createToken('User-info')->plainTextToken;
 
@@ -64,7 +74,7 @@ class UsersController extends Controller
         }
 
         return response()->json([
-            'message' => 'username or password is wrong'
+            'message' => 'phoneNumber or password is wrong'
         ], 403);
     }
 
