@@ -12,7 +12,7 @@ class UsersController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:55|unique:App\Models\User',
+            'name' => 'required|max:55',
             'lastname' => 'required|max:100',
             'phoneNumber' => 'required|numeric|unique:App\Models\User',
             'password' => 'required|max:400'
