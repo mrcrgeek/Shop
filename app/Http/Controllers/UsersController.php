@@ -86,7 +86,7 @@ class UsersController extends Controller
     public function edit_profile(Request $request)
     {
         $request->validate([
-            'name' => 'max:50|unique:App\Models\User',
+            'name' => 'max:50',
             'lastname' => 'max:100',
             'password' => 'max:400'
         ]);
@@ -148,7 +148,7 @@ class UsersController extends Controller
     public function edit_user(Request $request, $id)
     {
         $request->validate([
-            'name' => 'max:55|unique:App\Models\User',
+            'name' => 'max:55',
             'lastname' => 'max:100',
             'phoneNumber' => 'numeric|unique:App\Models\User',
             'password' => 'max:400'
