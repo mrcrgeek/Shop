@@ -78,21 +78,16 @@ class UsersController extends Controller
         ], 403);
     }
 
+    public function user_profile(Request $request)
+    {
+        $user_profile = Traits::show_user_profile($request->user()->id);
+        return $user_profile;
+    }
+
     public function get_user_by_id(Request $request,$id)
     {
-        $request->validate([
-            'id' => 'numeric'
-        ]);
-
-        $Find_User = User::where('id', $id);
-        if($Find_User->exists())
-        {
-            return $Find_User->first();
-        }
-
-        return response()->json([
-            'message' => 'User Not Found'
-        ], 404);
+        $user_profile = Traits::show_user_profile($id);
+        return $user_profile;
     }
 
     public function show(Request $request) //test

@@ -23,4 +23,18 @@ class Traits
 
         User::where('id', $id)->update($Final_data);
     }
+
+    static function show_user_profile($id)
+    {
+        $Find_User = User::where('id', $id);
+
+        if($Find_User->exists())
+        {
+            return response()->json($Find_User->first(), 200);
+        }
+
+        return response()->json([
+            'message' => 'User Not Found'
+        ], 404);
+    }
 }
