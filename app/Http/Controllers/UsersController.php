@@ -78,6 +78,23 @@ class UsersController extends Controller
         ], 403);
     }
 
+    public function get_user_by_id(Request $request,$id)
+    {
+        $request->validate([
+            'id' => 'numeric'
+        ]);
+
+        $Find_User = User::where('id', $id);
+        if($Find_User->exists())
+        {
+            return $Find_User->first();
+        }
+
+        return response()->json([
+            'message' => 'User Not Found'
+        ], 404);
+    }
+
     public function show(Request $request) //test
     {
         return $request->user();

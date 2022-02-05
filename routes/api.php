@@ -52,6 +52,9 @@ Route::prefix('/admin')->group(function () {
         ->name('user_pagination');
     Route::patch('/edit_user/{id}', [UsersController::class, 'edit_user'])->middleware('auth:admins')
         ->name('edit_user');
+
+    Route::get('/user/{id}', [UsersController::class, 'get_user_by_id'])->middleware('auth:admins');
+
     Route::post('/product/add_category', [CategoriesController::class, 'add_category'])->middleware('auth:admins')
         ->name('add_category');
     Route::post('/product/add', [ProductsController::class, 'add_product'])->middleware('auth:admins')
