@@ -102,19 +102,13 @@ class UsersController extends Controller
 
     public function edit_profile(Request $request)
     {
-        $request->validate([
+        $new_data = $request->validate([
             'name' => 'max:50',
             'lastname' => 'max:100',
             'password' => 'max:400'
         ]);
 
         $id = $request->user()->id;
-
-        $new_data = [
-            'name' => $request->input('name'),
-            'lastname' => $request->input('lastname'),
-            'password' => $request->input('password')
-        ];
 
         Traits::update_user($new_data, $id);
 
@@ -164,7 +158,7 @@ class UsersController extends Controller
 
     public function edit_user(Request $request, $id)
     {
-        $request->validate([
+        $new_data = $request->validate([
             'name' => 'max:55',
             'lastname' => 'max:100',
             'phoneNumber' => 'numeric|unique:App\Models\User',
@@ -175,13 +169,6 @@ class UsersController extends Controller
 
         if ($User_object->exists())
         {
-            $new_data = [
-                'name' => $request->input('name'),
-                'lastname' => $request->input('lastname'),
-                'phoneNumber' => $request->input('phoneNumber'),
-                'password' => $request->input('password')
-            ];
-
             if (isset($new_data['phoneNumber']) && (!\Check_PhoneNum_ir($request->input('phoneNumber')))) {
                 return response()->json([
                     'message' => 'Phone number should not be more or less than 11 char & should be IR'
