@@ -21,8 +21,6 @@ class Traits
         (!empty($new_data['phoneNumber']) && ($Final_data['phoneNumber'] = $new_data['phoneNumber']));
         (!empty($new_data['password']) && ($Final_data['password'] = Hash::make($new_data['password'])));
 
-        dd($new_data);
-
         User::where('id', $id)->update($Final_data);
     }
 }
