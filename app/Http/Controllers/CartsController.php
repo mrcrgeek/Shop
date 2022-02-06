@@ -23,9 +23,35 @@ class CartsController extends Controller
 
             if($CartObject->exists())
             {
+                $Product_Quantity = $CartObject->first()->quantity;
+
+                $Total = $request->input('quantity') + $Product_Quantity;
+
+                $Stock = $Product_object->stock;
+
+                if($Total <= 0)
+                {
+                    $CartObject->delete();
+
                     return response()->json([
-                        'message' => 'Product Already Exist in Your Cart'
+                        'message' => 'Cart Item Deleted Successfully'
+                    ], 200);
+                }
+
+                if($Stock - $Total <= 0)
+                {
+                    return response()->json([
+                        'message' => 'Too Much Quantity'
                     ], 422);
+                }
+
+                $CartObject->update([
+                    'quantity' => $Total
+                ]);
+
+                return response()->json([
+                    'message' => "Product Added to Cart Successfully"
+                ], 200);
             }
 
             $Stock = $Product_object->stock;

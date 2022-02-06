@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductCategory;
+use App\Models\Cart;
 
 class ProductsController extends Controller
 {
@@ -92,6 +93,8 @@ class ProductsController extends Controller
         if($Product_Object->exists())
         {
             $Product_Object->delete();
+
+            Cart::where('product_id', $id)->delete();
             ProductCategory::where('product_id', $id)->delete();
 
             return response()->json([
